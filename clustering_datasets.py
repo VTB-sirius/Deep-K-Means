@@ -67,7 +67,7 @@ class ClusteringDataset:
         return self.prepare_data(text, label)
 
     def init_tweets(self):
-        df = pd.read_csv('tweet.csv')
+        df = pd.read_csv('datasets/tweet.csv')
         label = df['label'].tolist()
         text = df['text'].tolist()
         return self.prepare_data(text, label)
