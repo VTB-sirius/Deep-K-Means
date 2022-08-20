@@ -69,7 +69,7 @@ class ClusteringDataset:
         return self.prepare_data(text, label)
 
     def init_tweets(self):
-        df = pd.read_csv(os.path.join(BASE_DIR, 'Deep-K-Means/datasets/tweet.csv'))
+        df = pd.read_csv(os.path.join(BASE_DIR, 'Deep-K-Means/datasets/tweets.csv'))
         label = df['label'].tolist()
         text = df['text'].tolist()
         return self.prepare_data(text, label)
