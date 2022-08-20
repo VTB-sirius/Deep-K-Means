@@ -4,7 +4,9 @@ import pandas as pd
 from torch.utils.data import DataLoader, Dataset
 from transformers import AutoTokenizer
 from datasets import load_dataset
+import os
 
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 def batch_collate(batch):
     input_ids, attention_mask, label = torch.utils.data._utils.collate.default_collate(batch)
@@ -67,19 +69,19 @@ class ClusteringDataset:
         return self.prepare_data(text, label)
 
     def init_tweets(self):
-        df = pd.read_csv('datasets/tweet.csv')
+        df = pd.read_csv(os.path.join(BASE_DIR, 'datasets/tweet.csv'))
         label = df['label'].tolist()
         text = df['text'].tolist()
         return self.prepare_data(text, label)
 
     def init_agnews(self):
-        df = pd.read_csv('datasets/agnews.csv')
+        df = pd.read_csv(os.path.join(BASE_DIR, 'datasets/agnews.csv'))
         label = df['label'].tolist()
         text = df['text'].tolist()
         return self.prepare_data(text, label)
 
     def init_short(self):
-        df = pd.read_csv('datasets/short.csv')
+        df = pd.read_csv(os.path.join(BASE_DIR, 'datasets/short.csv'))
         label = df['label'].tolist()
         text = df['text'].tolist()
         return self.prepare_data(text, label)
