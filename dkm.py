@@ -29,7 +29,7 @@ def calc_kmeans(loader, n_clusters, bert):
 parser = argparse.ArgumentParser(description="Deep k-means algorithm")
 parser.add_argument("-d", "--dataset", type=str.upper, default='TWEETS',
                     help="Dataset on which DKM will be run (one of DBPEDIA, YELP, TREC, AGNEWS, SHORT, TWEETS)",
-                    required=True)
+                    required=False)
 parser.add_argument("-c", "--cpu", help="Force the program to run on CPU", action='store_true', required=False)
 parser.add_argument("-l", "--lambda", type=float, default=0.0001, dest="lambda_", required=False,
                     help="Value of the hyperparameter weighing the clustering loss against the reconstruction loss")
