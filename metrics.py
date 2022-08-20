@@ -24,7 +24,7 @@ class Metric:
         if isinstance(y_true, torch.Tensor):
             y_true = y_true.cpu().detach().numpy()
             y_pred = y_pred.cpu().detach().numpy()
-        y_true = y_true.astype(np.int64)
+        y_true = np.array(y_true).astype(np.int64)
         assert y_pred.size == y_true.size
         D = max(y_pred.max(), y_true.max()) + 1
         w = np.zeros((D, D), dtype=np.int64)
@@ -34,7 +34,7 @@ class Metric:
         return sum([w[i, j] for i, j in zip(*ind)]) * 1.0 / y_pred.size
 
     @staticmethod
-    def calculate_purity(self, labels, preds):
+    def calculate_purity(labels, preds):
         if isinstance(preds, torch.Tensor):
             preds = preds.cpu().detach().numpy()
             labels = labels.cpu().detach().numpy()
@@ -45,7 +45,6 @@ class Metric:
             gt_i = labels[i]
             pr_i = preds[i]
             conf_matrix[gt_i, pr_i] = conf_matrix[gt_i, pr_i] + 1
-        conf_matrix = self.confusion_matrix_st(preds, labels)
         num_inst = np.sum(conf_matrix).astype(float)
         best_unions = np.amax(conf_matrix, axis=0)
         return np.sum(best_unions) / num_inst
