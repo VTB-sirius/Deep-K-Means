@@ -24,7 +24,7 @@ class Metric:
         if isinstance(y_true, torch.Tensor):
             y_true = y_true.cpu().detach().numpy()
             y_pred = y_pred.cpu().detach().numpy()
-        y_true = np.array(y_true).astype(np.int64)
+        y_true = y_true.astype(np.int64)
         assert y_pred.size == y_true.size
         D = max(y_pred.max(), y_true.max()) + 1
         w = np.zeros((D, D), dtype=np.int64)
