@@ -20,6 +20,7 @@ def calc_kmeans(loader, n_clusters, bert):
                 mask.to(device)).last_hidden_state,
                 mask.to(device)).cpu().detach().numpy()
             )
+        y_true = np.concatenate(y_true)
         y_pred = KMeans(n_clusters=n_clusters, init="k-means++").fit_predict(np.concatenate(X))
         print("Validation ACC", metric.cluster_accuracy(y_true, y_pred))
         print("Validation ARI", metric.ar(y_true, y_pred))
