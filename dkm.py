@@ -28,17 +28,17 @@ def calc_kmeans(loader, n_clusters, bert):
 
 parser = argparse.ArgumentParser(description="Deep k-means algorithm")
 parser.add_argument("-d", "--dataset", type=str.upper, default='TWEETS',
-                    help="Dataset on which DKM will be run (one of DBPEDIA, YELP, TREC, AGNEWS, SHORT, TWEETS)",
+                    help="Dataset on which DKM will be run (one of DBPEDIA, YELP, TREC, AGNEWS, SHORT, TWEETS), default: TWEETS",
                     required=False)
 parser.add_argument("-c", "--cpu", help="Force the program to run on CPU", action='store_true', required=False)
 parser.add_argument("-l", "--lambda", type=float, default=0.0001, dest="lambda_", required=False,
-                    help="Value of the hyperparameter weighing the clustering loss against the reconstruction loss")
+                    help="Value of the hyperparameter weighing the clustering loss against the reconstruction loss, default: 0.0001")
 parser.add_argument("-a", "--ae_epochs", type=int, default=50, required=False,
-                    help="Number of autoencoder training epochs")
-parser.add_argument("-e", "--cls_epochs", type=int, default=5, required=False,
-                    help="Number of train clustering epochs per alpha value")
-parser.add_argument("-b", "--batch_size", type=int, default=100, required=False, help="Size of batch")
-parser.add_argument("-t", "--max_len", type=int, default=128, required=False, help="Size of max token len")
+                    help="Number of autoencoder training epochs, default: 50")
+parser.add_argument("-e", "--cls_epochs", type=int, default=10, required=False,
+                    help="Number of train clustering epochs per alpha value, default: 10")
+parser.add_argument("-b", "--batch_size", type=int, default=100, required=False, help="Size of batch, default: 100")
+parser.add_argument("-t", "--max_len", type=int, default=128, required=False, help="Size of max token len, default: 128")
 args = parser.parse_args()
 
 
