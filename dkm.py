@@ -43,48 +43,48 @@ args = parser.parse_args()
 
 
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-if parser.cpu:
+if args.cpu:
     device = torch.device('cpu')
-pre = ClusteringDataset(parser.max_len, parser.batch_size)
+pre = ClusteringDataset(args.max_len, args.batch_size)
 bert = AutoModel.from_pretrained('bert-base-uncased').to(device)
 DeepKMeans.set_grad(bert)
 
-if parser.dataset == 'DBPEDIA':
+if args.dataset == 'DBPEDIA':
     print('============dbpedia============')
     loader, n_clusters = pre.init_dbpedia()
     calc_kmeans()
-    model1 = DeepKMeans(bert,  '', device,   n_clusters, n_clusters, parser.ae_epochs, parser.cls_epochs).to(device)
-    model1.fit(loader,  val_lambda=parser.lambda_, val=True)
-elif parser.dataset == 'YELP':
+    model1 = DeepKMeans(bert,  '', device,   n_clusters, n_clusters, args.ae_epochs, args.cls_epochs).to(device)
+    model1.fit(loader,  val_lambda=args.lambda_, val=True)
+elif args.dataset == 'YELP':
     print('============yelp============')
     loader, n_clusters = pre.init_yelp()
     calc_kmeans(loader, n_clusters, bert)
-    model = DeepKMeans(bert,  '', device,   n_clusters, n_clusters, parser.ae_epochs, parser.cls_epochs).to(device)
-    model.fit(loader,  val_lambda=parser.lambda_, val=True)
-elif parser.dataset == 'TREC':
+    model = DeepKMeans(bert,  '', device,   n_clusters, n_clusters, args.ae_epochs, args.cls_epochs).to(device)
+    model.fit(loader,  val_lambda=args.lambda_, val=True)
+elif args.dataset == 'TREC':
     print('============trec============')
     loader, n_clusters = pre.init_trec()
     calc_kmeans(loader, n_clusters, bert)
-    model = DeepKMeans(bert,  '', device,   n_clusters, n_clusters, parser.ae_epochs, parser.cls_epochs).to(device)
-    model.fit(loader, val_lambda=parser.lambda_, val=True)
-elif parser.dataset == 'AGNEWS':
+    model = DeepKMeans(bert,  '', device,   n_clusters, n_clusters, args.ae_epochs, args.cls_epochs).to(device)
+    model.fit(loader, val_lambda=args.lambda_, val=True)
+elif args.dataset == 'AGNEWS':
     print('============agnews============')
     loader, n_clusters = pre.init_agnews()
     calc_kmeans(loader, n_clusters, bert)
-    model = DeepKMeans(bert,  '', device,   n_clusters, n_clusters, parser.ae_epochs, parser.cls_epochs).to(device)
-    model.fit(loader,  val_lambda=parser.lambda_, val=True)
-elif parser.dataset == 'SHORT':
+    model = DeepKMeans(bert,  '', device,   n_clusters, n_clusters, args.ae_epochs, args.cls_epochs).to(device)
+    model.fit(loader,  val_lambda=args.lambda_, val=True)
+elif args.dataset == 'SHORT':
     print('============short============')
     loader, n_clusters = pre.init_short()
     calc_kmeans(loader, n_clusters, bert)
-    model = DeepKMeans(bert,  '', device,  n_clusters, n_clusters, parser.ae_epochs, parser.cls_epochs).to(device)
-    model.fit(loader,  val_lambda=parser.lambda_, val=True)
-elif parser.dataset == 'TWEETS':
+    model = DeepKMeans(bert,  '', device,  n_clusters, n_clusters, args.ae_epochs, args.cls_epochs).to(device)
+    model.fit(loader,  val_lambda=args.lambda_, val=True)
+elif args.dataset == 'TWEETS':
     print('============tweets============')
     loader, n_clusters = pre.init_tweets()
     calc_kmeans(loader, n_clusters, bert)
-    model = DeepKMeans(bert, '', device,  n_clusters, n_clusters, parser.ae_epochs, parser.cls_epochs).to(device)
-    model.fit(loader,  val_lambda=parser.lambda_, val=True)
+    model = DeepKMeans(bert, '', device,  n_clusters, n_clusters, args.ae_epochs, args.cls_epochs).to(device)
+    model.fit(loader,  val_lambda=args.lambda_, val=True)
 else:
     parser.error("Unknown dataset!")
     exit()
