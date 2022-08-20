@@ -3,7 +3,7 @@ import torch
 from clustering_datasets import ClusteringDataset
 from deep_k_means import DeepKMeans
 from transformers import AutoModel
-from mitrics import Metric as metric
+from metrics import Metric as metric
 import numpy as np
 from sklearn.cluster import KMeans
 

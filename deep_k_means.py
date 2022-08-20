@@ -2,7 +2,7 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 from autoencoder import AutoEncoder
-from mitrics import Metric as metric
+from metrics import Metric as metric
 from sklearn.cluster import KMeans
 from torch import nn
 from torch import optim
