@@ -35,7 +35,7 @@ parser.add_argument("-l", "--lambda", type=float, default=0.0001, dest="lambda_"
                     help="Value of the hyperparameter weighing the clustering loss against the reconstruction loss")
 parser.add_argument("-a", "--ae_epochs", type=int, default=50, required=False,
                     help="Number of autoencoder training epochs")
-parser.add_argument("-c", "--cls_epochs", type=int, default=5, required=False,
+parser.add_argument("-e", "--cls_epochs", type=int, default=5, required=False,
                     help="Number of train clustering epochs per alpha value")
 parser.add_argument("-b", "--batch_size", type=int, default=100, required=False, help="Size of batch")
 parser.add_argument("-t", "--max_len", type=int, default=128, required=False, help="Size of max token len")
