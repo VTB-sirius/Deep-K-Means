@@ -5,6 +5,7 @@ from sklearn.metrics.cluster import adjusted_rand_score, normalized_mutual_info_
 
 
 class Metric:
+
     @staticmethod
     def nmi(y, y_pred):
         if isinstance(y, torch.Tensor):
@@ -26,8 +27,8 @@ class Metric:
             y_pred = y_pred.cpu().detach().numpy()
         y_true = y_true.astype(np.int64)
         assert y_pred.size == y_true.size
-        D = max(y_pred.max(), y_true.max()) + 1
-        w = np.zeros((D, D), dtype=np.int64)
+        d = max(y_pred.max(), y_true.max()) + 1
+        w = np.zeros((d, d), dtype=np.int64)
         for i in range(y_pred.size):
             w[y_pred[i], y_true[i]] += 1
         ind = linear_assignment(w.max() - w)

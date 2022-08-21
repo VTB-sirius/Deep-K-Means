@@ -6,7 +6,7 @@ from transformers import AutoTokenizer
 from datasets import load_dataset
 import os
 
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR = os.path.abspath(os.getcwd())
 
 def batch_collate(batch):
     input_ids, attention_mask, label = torch.utils.data._utils.collate.default_collate(batch)

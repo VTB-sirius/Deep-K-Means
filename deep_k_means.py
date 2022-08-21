@@ -8,7 +8,6 @@ from torch import nn
 from torch import optim
 
 
-
 class DeepKMeans(nn.Module):
     def __init__(self, bert, tokenizer, device, embedding_size, n_clusters, n_epoch, cls_n_epoch):
         super().__init__()
@@ -51,6 +50,7 @@ class DeepKMeans(nn.Module):
         auto_encoder_embeddings = np.concatenate(auto_encoder_embeddings)
         k_means = KMeans(n_clusters=self.n_clusters, init="k-means++").fit(auto_encoder_embeddings)
         if val:
+            print('K-Means on AutoEncoder')
             self.validation(loader, kmeans=k_means)
         self.ae.a_enc_centers.copy_(torch.as_tensor(k_means.cluster_centers_, dtype=torch.float).to(self.device))
 
@@ -59,7 +59,6 @@ class DeepKMeans(nn.Module):
         diff = auto_encoder_embedding.unsqueeze(1) - self.ae.a_enc_centers.unsqueeze(0)
         diff = torch.sum(diff ** 2, dim=-1).unsqueeze(0)
         min_dist = torch.min(diff, dim=-1).indices
-
         return min_dist, F.softmax(diff, dim=-1)
 
     def get_clusters(self, loader):
@@ -81,7 +80,6 @@ class DeepKMeans(nn.Module):
 
         with torch.no_grad():
             self.eval()
-
             if kmeans is None:
                 y_pred, _, y_true = self.get_clusters(val_loader)
             else:
@@ -94,12 +92,10 @@ class DeepKMeans(nn.Module):
                     y_pred.append(kmeans.predict(auto_encoder_embedding.cpu().detach().numpy()))
                 y_pred = np.concatenate(y_pred)
                 y_true = np.concatenate(y_true)
-
             print("Validation ACC", metric.cluster_accuracy(y_true, y_pred))
             print("Validation ARI", metric.ar(y_true, y_pred))
             print("Validation NMI", metric.nmi(y_true, y_pred))
             print("Validation purity", metric.calculate_purity(y_true, y_pred))
-
             if len(np.unique(y_pred)) != len(np.unique(y_true)):
                 print(f'Есть вырожденный кластер. Всего кластеров {len(np.unique(y_pred))}')
             self.train()
@@ -109,7 +105,8 @@ class DeepKMeans(nn.Module):
             print(f'Epoch: {epoch}')
             for i, batch in enumerate(loader):
                 input_, mask, _ = batch
-                auto_encoder_embedding, bert_output, auto_encoder_output = self.forward(input_.to(self.device), mask.to(self.device))
+                auto_encoder_embedding, bert_output, auto_encoder_output =\
+                    self.forward(input_.to(self.device), mask.to(self.device))
                 diff = auto_encoder_embedding.unsqueeze(1) - self.ae.a_enc_centers.unsqueeze(0)
                 diff = torch.sum(diff ** 2, dim=-1)
                 kmeans_loss = torch.mean(torch.max(diff, dim=0).values)
@@ -119,7 +116,6 @@ class DeepKMeans(nn.Module):
                 nn.utils.clip_grad_norm_(self.parameters(), max_norm=1, norm_type=2)
                 self.optimizer.step()
                 self.optimizer.zero_grad()
-
             if val:
                 self.validation(loader)
         return self.get_clusters(loader)
@@ -131,8 +127,8 @@ class DeepKMeans(nn.Module):
             mean_loss = 0
             for i, batch in enumerate(loader):
                 input_, mask, _ = batch
-                auto_encoder_embedding, bert_output, auto_encoder_output = self.forward(input_.to(self.device),
-                                                                                   mask.to(self.device))
+                auto_encoder_embedding, bert_output, auto_encoder_output =\
+                    self.forward(input_.to(self.device), mask.to(self.device))
                 loss = self.criterion(auto_encoder_output, bert_output)
                 loss.backward()
                 self.optimizer.step()

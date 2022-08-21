@@ -26,14 +26,15 @@ class AutoEncoder(nn.Module):
         reconstructed = self._decoder(ae_embedding)
         return ae_embedding, reconstructed
 
-    def _spec2seq(self, input, dimentions, activations):
+    @staticmethod
+    def _spec2seq(input_, dims, activations):
         layers = []
-        for dim, act in zip(dimentions, activations):
-            layer = nn.Linear(input, dim)
+        for dim, act in zip(dims, activations):
+            layer = nn.Linear(input_, dim)
             nn.init.xavier_uniform_(layer.weight)
             nn.init.zeros_(layer.bias)
             layers.append(layer)
             if act:
                 layers.append(act())
-            input = dim
+            input_ = dim
         return layers
