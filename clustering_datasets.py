@@ -69,19 +69,19 @@ class ClusteringDataset:
         return self.prepare_data(text, label)
 
     def init_tweets(self):
-        df = pd.read_csv(os.path.join(BASE_DIR, 'Deep-K-Means/datasets/tweets.csv'))
+        df = pd.read_csv(os.path.join(BASE_DIR, 'datasets/tweets.csv'))
         label = df['label'].tolist()
         text = df['text'].tolist()
         return self.prepare_data(text, label)
 
     def init_agnews(self):
-        df = pd.read_csv(os.path.join(BASE_DIR, 'Deep-K-Means/datasets/agnews.csv'))
+        df = pd.read_csv(os.path.join(BASE_DIR, 'datasets/agnews.csv'))
         label = df['label'].tolist()
         text = df['text'].tolist()
         return self.prepare_data(text, label)
 
     def init_short(self):
-        df = pd.read_csv(os.path.join(BASE_DIR, 'Deep-K-Means/datasets/short.csv'))
+        df = pd.read_csv(os.path.join(BASE_DIR, 'datasets/short.csv'))
         label = df['label'].tolist()
         text = df['text'].tolist()
         return self.prepare_data(text, label)
