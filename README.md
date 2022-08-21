@@ -1,7 +1,7 @@
 # Deep-K-Means
 ## Description
 Realization of deep k-means on pytorch https://arxiv.org/abs/1806.10069 </br>
-Calculation of NMI, ARI, Cluster Accuracy, Purity metrics of Deep K-Means, K-Means on AutoEncoder (in epoch 0), K-Means on Ebeddings models.
+Calculation of NMI, ARI, Cluster Accuracy, Purity metrics of Deep K-Means, K-Means on AutoEncoder, K-Means on Ebeddings models.
 ## Installation
 Run the command:\
 ``pip install -r requirements.txt``

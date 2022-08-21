@@ -28,6 +28,25 @@ class DeepKMeans(nn.Module):
         for param in net.parameters():
             param.requires_grad = require
 
+    def calc_kmeans(self, loader):
+        with torch.no_grad():
+            y_true = []
+            x = []
+            for i, batch in enumerate(loader):
+                input_, mask, validation_target = batch
+                y_true.append(validation_target.cpu().detach().numpy())
+                x.append(DeepKMeans.mean_pooling(
+                    self.bert(input_.to(self.device),
+                         mask.to(self.device)).last_hidden_state,
+                    mask.to(self.device)).cpu().detach().numpy()
+                         )
+            y_true = np.concatenate(y_true)
+            y_pred = KMeans(n_clusters=self.n_clusters, init="k-means++").fit_predict(np.concatenate(x))
+            print("Validation ACC", metric.cluster_accuracy(y_true, y_pred))
+            print("Validation ARI", metric.ar(y_true, y_pred))
+            print("Validation NMI", metric.nmi(y_true, y_pred))
+            print("Validation purity", metric.calculate_purity(y_true, y_pred))
+
     @staticmethod
     def mean_pooling(last_hidden_state, attention_mask):
         input_mask_expanded = attention_mask.unsqueeze(-1).expand(last_hidden_state.size()).float()
